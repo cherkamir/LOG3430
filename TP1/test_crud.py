@@ -429,7 +429,7 @@ class TestCRUD(unittest.TestCase):
 
         crud = CRUD()
         crud.remove_user_group("1", "default")
-        mock_modify_users_file.assert_called_once_with(updated_users_final)
+        mock_modify_users_file.assert_called_once_with(updated_users_final )
 
         pass
 
@@ -438,6 +438,12 @@ class TestCRUD(unittest.TestCase):
     def test_remove_group_Returns_false_for_invalid_id(
         self, mock_read_groups_file, mock_modify_groups_file
     ):
+
+        mock_read_groups_file.return_value = self.groups_data
+        crud = CRUD()
+        self.assertFalse(crud.remove_group("3"))
+
+
         pass
 
     @patch("crud.CRUD.modify_groups_file")
@@ -445,13 +451,35 @@ class TestCRUD(unittest.TestCase):
     def test_remove_group_Passes_correct_value_to_modify_groups_file(
         self, mock_read_groups_file, mock_modify_groups_file
     ):
-        pass
+        mock_read_groups_file.return_value = self.groups_data
+
+        removed_group = {
+            "2": {
+                "name": "friends",
+                "Trust": 90,
+                "List_of_members": ["alex@gmail.com"],
+            },
+        }
+
+        remove_group_final = {}
+        remove_group_final["2"] = removed_group["2"]
+
+        crud = CRUD()
+        crud.remove_group("1")
+
+        mock_modify_groups_file.assert_called_once_with(remove_group_final)
+        
 
     @patch("crud.CRUD.modify_groups_file")
     @patch("crud.CRUD.read_groups_file")    
     def test_remove_group_member_Returns_false_for_invalid_id(
         self, mock_read_groups_file, mock_modify_groups_file
     ):
+
+        mock_read_groups_file.return_value = self.groups_data
+        crud = CRUD()
+
+        self.assertFalse(crud.remove_group_member("3", "alex@gmail.com"))
         pass
 
     @patch("crud.CRUD.modify_groups_file")
@@ -459,6 +487,11 @@ class TestCRUD(unittest.TestCase):
     def test_remove_group_member_Returns_false_for_invalid_group_member(
         self, mock_read_groups_file, mock_modify_groups_file
     ):
+
+        mock_read_groups_file.return_value = self.groups_data
+        crud = CRUD()
+
+        self.assertFalse(crud.remove_group_member("1", "whatever@gmail.com"))
         pass
 
     @patch("crud.CRUD.modify_groups_file")
@@ -466,6 +499,24 @@ class TestCRUD(unittest.TestCase):
     def test_remove_group_member_Passes_correct_value_to_modify_groups_file(
         self, mock_read_groups_file, mock_modify_groups_file
     ):
+
+        mock_read_groups_file.return_value = self.groups_data
+        
+        removed_group_member = {
+            "1": {
+                "name": "default",
+                "Trust": 50,
+                "List_of_members": ["mark@mail.com"],
+            },
+        }
+
+        removed_member_final = {}
+        removed_member_final["1"] = removed_group_member["1"]
+        removed_member_final["2"] = self.groups_data["2"]
+
+        crud = CRUD()
+        crud.remove_group_member("1", "alex@gmail.com")
+        mock_modify_groups_file.assert_called_once_with(removed_member_final)
         pass
     
     ###########################################
