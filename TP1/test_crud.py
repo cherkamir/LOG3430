@@ -1,3 +1,4 @@
+from turtle import update
 from crud import CRUD
 import unittest
 from unittest.mock import patch
@@ -386,6 +387,10 @@ class TestCRUD(unittest.TestCase):
     def test_remove_user_group_Returns_false_for_invalid_id(
         self, mock_read_users_file, mock_modify_users_file
     ):
+
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        self.assertFalse(crud.remove_user_group("3", "default"))
         pass
 
     @patch("crud.CRUD.modify_users_file")
@@ -393,6 +398,10 @@ class TestCRUD(unittest.TestCase):
     def test_remove_user_group_Returns_false_for_invalid_group(
         self, mock_read_users_file, mock_modify_users_file
     ):
+
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        self.assertFalse(crud.remove_user_group("1", "whatever"))
         pass
 
     @patch("crud.CRUD.modify_users_file")
@@ -400,6 +409,28 @@ class TestCRUD(unittest.TestCase):
     def test_remove_user_group_Passes_correct_value_to_modify_users_file(
         self, mock_read_users_file, mock_modify_users_file
     ):
+        mock_read_users_file.return_value = self.users_data
+
+
+        updated_users_data = {
+                "name": "alex@gmail.com",
+                "Trust": 100,
+                "SpamN": 0,
+                "HamN": 20,
+                "Date_of_first_seen_message": 1596844800.0,
+                "Date_of_last_seen_message": 1596844800.0,
+                "Groups": [],
+            }
+
+        updated_users_final = {}
+        updated_users_final["1"] = updated_users_data
+        updated_users_final["2"] = self.users_data["2"]
+
+
+        crud = CRUD()
+        crud.remove_user_group("1", "default")
+        mock_modify_users_file.assert_called_once_with(updated_users_final)
+
         pass
 
     @patch("crud.CRUD.modify_groups_file")
