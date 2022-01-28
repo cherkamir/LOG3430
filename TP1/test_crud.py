@@ -46,6 +46,7 @@ class TestCRUD(unittest.TestCase):
         pass
 
 
+
     @patch("crud.CRUD.read_users_file")    
     @patch("crud.CRUD.modify_groups_file")
     @patch("crud.CRUD.modify_users_file")
@@ -522,3 +523,13 @@ class TestCRUD(unittest.TestCase):
     ###########################################
     #               CUSTOM TEST               #
     ###########################################
+    # @patch("crud.CRUD.get_new_user_id")
+    @patch("crud.CRUD.read_users_file")
+    def test_get_new_user_id_returns_the_correct_id(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        # print(crud.get_new_user_id())
+        self.assertEqual(crud.get_new_user_id(), "0")
+
