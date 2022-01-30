@@ -28,6 +28,19 @@ class TestCRUD(unittest.TestCase):
                 "Groups": ["default"],
             }
         }
+
+        self.custom_users_data = {
+            "0": {
+                "name": "alex@gmail.com",
+                "Trust": 100,
+                "SpamN": 0,
+                "HamN": 20,
+                "Date_of_first_seen_message": 953902800.0,
+                "Date_of_last_seen_message": 1896844800.0,
+                "Groups": ["default"],
+            },
+        }
+
         # c'est un exemple de données "mock" à utiliser comme "return value" de read_groups_file
         self.groups_data = {
             "1": {
@@ -41,6 +54,15 @@ class TestCRUD(unittest.TestCase):
                 "List_of_members": ["alex@gmail.com"],
             },
         }
+
+        self.custom_groups_data = {
+            "0": {
+                "name": "default",
+                "Trust": 50,
+                "List_of_members": ["alex@gmail.com", "mark@mail.com"],
+            },
+        }
+
 
     def tearDown(self):
         pass
@@ -523,13 +545,108 @@ class TestCRUD(unittest.TestCase):
     ###########################################
     #               CUSTOM TEST               #
     ###########################################
-    # @patch("crud.CRUD.get_new_user_id")
+
     @patch("crud.CRUD.read_users_file")
     def test_get_new_user_id_returns_the_correct_id(
         self, mock_read_users_file
     ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertEqual(crud.get_new_user_id(), '1')
+
+    @patch("crud.CRUD.read_groups_file")
+    def test_get_new_group_id_returns_the_correct_id(
+        self, mock_read_groups_file
+    ):
+        mock_read_groups_file.return_value = self.custom_groups_data
+        crud = CRUD()
+        self.assertEqual(crud.get_new_group_id(), '1')
+
+    #test if date is correctly converted to unix-timestamp
+    @patch("crud.CRUD.read_users_file")
+    def test_convert_date_to_unix_timestamp(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertEqual(crud.convert_to_unix("2020-01-01"), 1577836800)
+
+
+    @patch("crud.CRUD.read_users_file")    
+    def test_add_new_user_returns_False_if_email_format_not_correct(
+        self, mock_read_users_file
+    ):
+
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
-        # print(crud.get_new_user_id())
-        self.assertEqual(crud.get_new_user_id(), "0")
+        self.assertFalse(crud.add_new_user("james", "2020-08-08"))
+    
+    @patch("crud.CRUD.read_groups_file")
+    def test_add_new_group_returns_False_if_not_all_members_exists(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.groups_data
+        crud = CRUD()
+        self.assertFalse(crud.add_new_group("groupTest", 90, ["amir@gmail.com", "etienne@polymtl.ca"]))
+    
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_data_is_not_correct(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("1", "name", "2020-08-08"))
+
+
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_last_seen_message_is_before(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("0", "Date_of_last_seen_message", "2020-08-08"))
+
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_first_seen_message_is_after(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("0", "Date_of_first_seen_message", "2020-08-08"))
+
+    
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_data_is_lower_than_zero(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("0", "SpamN", -5))
+
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_data_not_between_zero_and_one_hundred(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("0", "Trust", 150))
+
+    @patch("crud.CRUD.read_users_file")
+    def test_update_users_returns_false_if_group_is_not_in_the_lookup(
+        self, mock_read_users_file
+    ):
+        mock_read_users_file.return_value = self.custom_users_data
+        crud = CRUD()
+        self.assertFalse(crud.update_users("0", "Groups", "NotInTheLookup"))
+
+    @patch("crud.CRUD.read_groups_file")
+    def test_update_groups_returns_false_if_length_of_data_not_correct(
+        self, mock_read_groups_file
+    ):
+        mock_read_groups_file.return_value = self.custom_groups_data
+        crud = CRUD()
+        self.assertFalse(crud.update_groups("0", "name", ""))
+
+    
+    
 
