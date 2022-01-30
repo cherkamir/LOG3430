@@ -29,6 +29,8 @@ class TestCRUD(unittest.TestCase):
             }
         }
 
+        #ajout de donnees "mock" a utiliser comme return value dans les tests custom, afin de verifier si un utilisateur
+        #ajoute ici aura "1" comme ID
         self.custom_users_data = {
             "0": {
                 "name": "alex@gmail.com",
@@ -55,6 +57,8 @@ class TestCRUD(unittest.TestCase):
             },
         }
 
+        #ajout de donnees "mock" a utiliser comme return value dans les tests custom, afin de verifier si un groupe 
+        #ajoute ici aura "1" comme ID
         self.custom_groups_data = {
             "0": {
                 "name": "default",
