@@ -8,31 +8,31 @@ from unittest.mock import patch
 
 class TestEmailAnalyzer(unittest.TestCase):
     def setUp(self):
-        self.subject = ""
-        self.body = ""
+        self.subject = "Voyage"
+        self.body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         self.clean_subject = []  # données pour mocker "return_value" du "clean_text"
         self.clean_body = []  # données pour mocker "return_value" du "clean_text"
         self.spam_ham_body_prob_true = (
-            0,
+            1,
             0,
         )  # données pour mocker "return_value" du "spam_ham_body_prob"
         self.spam_ham_subject_prob_true = (
-            0,
+            1,
             0,
         )  # données pour mocker "return_value" du "subject_spam_ham_prob"
         self.spam_ham_body_prob_false = (
             0,
-            0,
+            1,
         )  # données pour mocker "return_value" du "spam_ham_body_prob"
         self.spam_ham_subject_prob_false = (
             0,
-            0,
+            1,
         )  # données pour mocker "return_value" du "subject_spam_ham_prob"
         self.vocab = (
             {}
         )  # vocabulaire avec les valeurs de la probabilité pour mocker "return_value" du "load_dict"
-        self.spam_ham_body_prob_expected = 0, 0  # valeurs des probabilités attendues
-        self.spam_ham_subject_prob_expected = 0, 0  # valeurs des probabilités attendues
+        self.spam_ham_body_prob_expected = 0, 1  # valeurs des probabilités attendues
+        self.spam_ham_subject_prob_expected = 1, 0  # valeurs des probabilités attendues
 
     def tearDown(self):
         pass
@@ -47,6 +47,10 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker les fonctions "spam_ham_body_prob" et "subject_spam_ham_prob".
         La sortie de la fonction doit être True si probabilité spam > probabilité ham
         """
+        mock_spam_ham_subject_prob.return_value = self.spam_ham_subject_prob_true
+        mock_spam_ham_body_prob.return_value = self.spam_ham_body_prob_true
+        email = EmailAnalyzer()
+        self.assertEqual(email.is_spam(self.subject, self.body), True)
         pass
 
     @patch("email_analyzer.EmailAnalyzer.clean_text")
@@ -59,6 +63,10 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker les fonctions "spam_ham_body_prob" et "subject_spam_ham_prob".
         La sortie de la fonction doit être False si probabilité spam < probabilité ham
         """
+        mock_spam_ham_subject_prob.return_value = self.spam_ham_subject_prob_false
+        mock_spam_ham_body_prob.return_value = self.spam_ham_body_prob_false
+        email = EmailAnalyzer()
+        self.assertEqual(email.is_spam(self.subject, self.body), False)
         pass
 
     @patch("email_analyzer.EmailAnalyzer.load_dict")
@@ -67,6 +75,9 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker la fonction "load_dict"
         Il faut vérifier que probabilité est calculée correctement en fonction du "body"
         """
+        mock_load_dict = self.vocab
+        email = EmailAnalyzer()
+        self.assertEqual(email.spam_ham_body_prob(self.body), (0.5925, 0.4075))
         pass
 
     @patch("email_analyzer.EmailAnalyzer.load_dict")
@@ -75,6 +86,9 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker la fonction "load_dict"
         il faut vérifier que probabilité est calculée correctement en fonction du "sujet"
         """
+        mock_load_dict = self.vocab
+        email = EmailAnalyzer()
+        self.assertEqual(email.spam_ham_subject_prob(self.subject), (0.5925, 0.4075))
         pass
 
     ###########################################
