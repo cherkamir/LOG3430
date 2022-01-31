@@ -177,3 +177,40 @@ class RENEGE:
     ###########################################
     #             CUSTOM FUNCTION             #
     ###########################################
+
+    def utilisater_trust_calcul(self, user_id):
+        '''
+            Description: fonction pour calculer le niveau de confiance (Trust) de l’utilisateur.
+            Sortie: retourne le niveau de confiance, seulement si celui si est entre
+                    0 et 100. Dans le cas contraire, retourne false
+        '''
+
+        time_first_seen_message = self.crud.get_user_data(user_id, "Date_of_first_seen_message")
+        time_last_seen_message = self.crud.get_user_data(user_id, "Date_of_last_seen_message")
+        NHam = self.crud.get_user_data(user_id, "HamN")
+        NSpam = self.crud.get_user_data(user_id, "SpamN")
+        trust2 = 0
+        nb_groups = 0
+
+        # Calcul trust1
+        trust1 = time_last_seen_message * NHam / time_first_seen_message * (NHam + NSpam)
+
+        # Calcul trust2
+        groups = self.crud.get_user_data(user_id, "Groups")
+        for group in groups:
+            trust2 += self.crud.get_groups_data(self.crud.get_group_id(group), "Trust")
+            nb_groups += 1
+        trust2 = trust2 / nb_groups
+
+        # Calcul trust
+        trust = 0.6 * trust1 + 0.4 * trust2 / 2
+
+        if trust2 < 60:
+            trust = trust2
+
+        if trust1 > 100:
+            trust = 100
+
+        if 0 <= trust <= 100:
+            return trust
+        return False
