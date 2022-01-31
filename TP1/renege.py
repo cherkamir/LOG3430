@@ -203,14 +203,15 @@ class RENEGE:
         trust2 = trust2 / nb_groups
 
         # Calcul trust
-        trust = 0.6 * trust1 + 0.4 * trust2 / 2
-
         if trust2 < 60:
             trust = trust2
-
-        if trust1 > 100:
+        elif trust1 > 100:
             trust = 100
+        else:
+            trust = 0.6 * trust1 + 0.4 * trust2 / 2
 
+        #verification que trust est bien entre 0 et 100
         if 0 <= trust <= 100:
             return trust
+        #return False si trust est en dehors de l'intervalle [0,100]
         return False
