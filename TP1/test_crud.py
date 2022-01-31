@@ -127,6 +127,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on ajoute des utilisateurs afin de populer un nouveau groupe
         crud.add_new_user("amir@gmail.com", "2020-08-08")
         crud.add_new_user("mike@gmail.com", "2020-08-12")
         crud.add_new_user("test@gmail.com", "2020-08-15")
@@ -138,9 +139,11 @@ class TestCRUD(unittest.TestCase):
             "List_of_members": ["amir@gmail.com", "mike@gmail.com", "test@gmail.com"],
         }
 
+        #on effectue une copie de la liste de groupes
         groups_data_final = {}
         groups_data_final["1"] = self.groups_data["1"]
         groups_data_final["2"] = self.groups_data["2"]
+        #on ajoute le nouveau groupe
         groups_data_final["0"] = new_group_data
 
         
@@ -161,6 +164,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un ID non-existant
         self.assertFalse(crud.get_user_data("3", "SpamN"))
 
         pass
@@ -175,6 +179,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un champ non-existant
         self.assertFalse(crud.get_user_data("1", "whatever"))
         pass
 
@@ -189,6 +194,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne la bonne valeur pour un champ et un ID valide
         self.assertEqual(crud.get_user_data("1", "Trust"), 100)
 
         pass
@@ -201,6 +207,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un ID non-existant
         self.assertFalse(crud.get_groups_data("3", "Trust"))
         pass
 
@@ -214,6 +221,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un champ non-existant
         self.assertFalse(crud.get_groups_data("1", "whatever"))
         pass
 
@@ -227,6 +235,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne la bonne valeur pour un champ et un ID valide
         self.assertEqual(crud.get_groups_data("1", "Trust"), 50)
         pass
 
@@ -237,6 +246,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un nom d'utilisateur non-existant
         self.assertFalse(crud.get_groups_data("1", "Trust"), 25)
 
         pass
@@ -246,6 +256,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne le bon ID pour un nom d'utilisateur valide
         self.assertEqual(crud.get_user_id("alex@gmail.com"), "1")
         pass
 
@@ -255,6 +266,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un nom de groupe non-existant
         self.assertFalse(crud.get_group_id("whatever"))
         pass
 
@@ -263,6 +275,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si la fonction retourne le bon ID pour un nom de groupe valide
         self.assertEqual(crud.get_group_id("default"), "1")
         
         pass
@@ -278,6 +291,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un ID invalide
         self.assertFalse(crud.update_users("3", "Trust", 33))
 
         pass
@@ -292,6 +306,7 @@ class TestCRUD(unittest.TestCase):
         """
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si la fonction retourne false pour un champ invalide
         self.assertFalse(crud.update_users("1", "whatever", 33))
 
         pass
@@ -308,6 +323,8 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
 
+        #on change la valeur de "Trust" pour l'utilisateur 1 afin de verifier si c'est bien ce que
+        #l'utilisateur 1 sera une fois la modification faite
         updated_user_data = {
                 "name": "alex@gmail.com",
                 "Trust": 33,
@@ -318,12 +335,14 @@ class TestCRUD(unittest.TestCase):
                 "Groups": ["default"],
             }    
 
+        #on teste si la fonction retourne false pour un champ invalide
         users_data_final = {}
         users_data_final["1"] = updated_user_data
         users_data_final["2"] = self.users_data["2"]
 
         crud = CRUD()
         crud.update_users("1", "Trust", 33)
+        #on verifie que modify_users_file a bien ete appele avec les bonnes donnees
         mock_modify_users_file.assert_called_once_with(users_data_final)
         pass
 
@@ -338,6 +357,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si update_groups retourne false pour un ID invalide
         self.assertFalse(crud.update_groups("3", "Trust", 33))
         pass
 
@@ -352,6 +372,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si update_groups return false pour un champ invalide
         self.assertFalse(crud.update_groups("1", "whatever", 33))
 
         pass
@@ -368,6 +389,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
 
+        #on cree un groupe avec la valeur de "Trust" qui sera donnee en parametre a update_groups
         updated_group_data = {
                 "name": "default",
                 "Trust": 33,
@@ -380,6 +402,7 @@ class TestCRUD(unittest.TestCase):
 
         crud = CRUD()
         crud.update_groups("1", "Trust", 33)
+        #on verifie que modify_groups_file a bien ete appele avec les bonnes donnees
         mock_modify_groups_file.assert_called_once_with(groups_data_final)
         pass
 
@@ -391,6 +414,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si remove_user retourne false pour un ID invalide
         self.assertFalse(crud.remove_user("3"))
         pass
 
@@ -401,11 +425,14 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.users_data 
 
+        #on cree un user_data sans le premier utilisateur pour voir s'il sera bien supprime
         users_data_final = {}
         users_data_final["2"] = self.users_data["2"]
 
         crud = CRUD()
+        #on remove le premier utilisateur
         crud.remove_user(1)
+        #on verifie que modify_users_file a bien ete appele avec les bonnes donnees
         mock_modify_users_file.assert_called_once_with(users_data_final)
         pass
 
@@ -417,6 +444,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si remove_user_group retourne false pour un ID invalide
         self.assertFalse(crud.remove_user_group("3", "default"))
         pass
 
@@ -428,6 +456,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si remove_user_group retourne false pour un groupe invalide
         self.assertFalse(crud.remove_user_group("1", "whatever"))
         pass
 
@@ -438,7 +467,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.users_data
 
-
+        #on cree un user_data sans le groupe "default" pour voir s'il sera bien supprime
         updated_users_data = {
                 "name": "alex@gmail.com",
                 "Trust": 100,
@@ -455,7 +484,9 @@ class TestCRUD(unittest.TestCase):
 
 
         crud = CRUD()
+        #on remove le groupe "default" du premier utilisateur
         crud.remove_user_group("1", "default")
+        #on verifie que modify_users_file a bien ete appele avec les bonnes donnees
         mock_modify_users_file.assert_called_once_with(updated_users_final )
 
         pass
@@ -468,6 +499,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si remove_group retourne false pour un ID invalide
         self.assertFalse(crud.remove_group("3"))
 
 
@@ -480,6 +512,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_groups_file.return_value = self.groups_data
 
+        #on cree un groupe_data sans le premier groupe pour voir s'il sera bien supprime
         removed_group = {
             "2": {
                 "name": "friends",
@@ -488,12 +521,14 @@ class TestCRUD(unittest.TestCase):
             },
         }
 
+        #on cree un groupe_data a qui on donne le 2e groupe sans le premier
         remove_group_final = {}
         remove_group_final["2"] = removed_group["2"]
 
         crud = CRUD()
         crud.remove_group("1")
 
+        #on verifie que modify_groups_file a bien ete appele avec les bonnes donnees
         mock_modify_groups_file.assert_called_once_with(remove_group_final)
         
 
@@ -505,7 +540,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
-
+        #on teste si remove_group_member retourne false pour un ID invalide
         self.assertFalse(crud.remove_group_member("3", "alex@gmail.com"))
         pass
 
@@ -517,7 +552,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
-
+        #on teste si remove_group_member retourne false pour un groupe invalide
         self.assertFalse(crud.remove_group_member("1", "whatever@gmail.com"))
         pass
 
@@ -529,6 +564,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_groups_file.return_value = self.groups_data
         
+        #on cree un groupe_data sans le membre "alex@gmail.com" pour voir s'il sera bien supprime
         removed_group_member = {
             "1": {
                 "name": "default",
@@ -537,12 +573,15 @@ class TestCRUD(unittest.TestCase):
             },
         }
 
+        #on cree un groupe_data a qui on donne le 1er groupe sans le membre "alex@gmail.com"
         removed_member_final = {}
         removed_member_final["1"] = removed_group_member["1"]
         removed_member_final["2"] = self.groups_data["2"]
 
         crud = CRUD()
         crud.remove_group_member("1", "alex@gmail.com")
+
+        #on verifie que modify_groups_file a bien ete appele avec les bonnes donnees
         mock_modify_groups_file.assert_called_once_with(removed_member_final)
         pass
     
@@ -556,6 +595,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on teste si get_new_user_id le bon id d'un nouvel utilisateur
         self.assertEqual(crud.get_new_user_id(), '1')
 
     @patch("crud.CRUD.read_groups_file")
@@ -564,6 +604,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_groups_file.return_value = self.custom_groups_data
         crud = CRUD()
+        #on teste si get_new_group_id le bon id d'un nouveau groupe
         self.assertEqual(crud.get_new_group_id(), '1')
 
     #test if date is correctly converted to unix-timestamp
@@ -573,6 +614,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on teste si convert_date_to_unix_timestamp le bon timestamp
         self.assertEqual(crud.convert_to_unix("2020-01-01"), 1577836800)
 
 
@@ -583,6 +625,7 @@ class TestCRUD(unittest.TestCase):
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on teste si add_new_user retourne False pour un email invalide
         self.assertFalse(crud.add_new_user("james", "2020-08-08"))
     
     @patch("crud.CRUD.read_groups_file")
@@ -591,6 +634,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.groups_data
         crud = CRUD()
+        #on teste si add_new_group retourne False si un ou plusieurs membres n'existent pas
         self.assertFalse(crud.add_new_group("groupTest", 90, ["amir@gmail.com", "etienne@polymtl.ca"]))
     
     @patch("crud.CRUD.read_users_file")
@@ -599,6 +643,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si les donnees ne sont pas correctes
         self.assertFalse(crud.update_users("1", "name", "2020-08-08"))
 
 
@@ -608,6 +653,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si la date de derniere connexion est avant la date actuelle
         self.assertFalse(crud.update_users("0", "Date_of_last_seen_message", "2020-08-08"))
 
     @patch("crud.CRUD.read_users_file")
@@ -616,6 +662,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si la date de premiere connexion est apres la date actuelle
         self.assertFalse(crud.update_users("0", "Date_of_first_seen_message", "2020-08-08"))
 
     
@@ -625,6 +672,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si les donnees sont inferieures a zero
         self.assertFalse(crud.update_users("0", "SpamN", -5))
 
     @patch("crud.CRUD.read_users_file")
@@ -633,6 +681,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si les donnees sont superieures a 100
         self.assertFalse(crud.update_users("0", "Trust", 150))
 
     @patch("crud.CRUD.read_users_file")
@@ -641,6 +690,7 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
+        #on verifie que update_users retourne False si le groupe n'existe pas
         self.assertFalse(crud.update_users("0", "Groups", "NotInTheLookup"))
 
     @patch("crud.CRUD.read_groups_file")
@@ -649,7 +699,9 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_groups_file.return_value = self.custom_groups_data
         crud = CRUD()
-        self.assertFalse(crud.update_groups("0", "name", ""))
+        #on verifie que update_groups retourne False si la taille de la liste de membres n'est pas correcte
+        self.assertFalse(crud.update_groups("0", "name", ""))   
+
 
     
     
