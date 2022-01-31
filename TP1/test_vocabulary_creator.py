@@ -1,18 +1,72 @@
+import json
 from vocabulary_creator import VocabularyCreator
 import unittest
 from unittest.mock import patch
 
 class TestVocabularyCreator(unittest.TestCase):
     def setUp(self):
-        self.mails = {}  # données pour mocker "return_value" du "load_dict"
-        self.clean_subject_spam = []  # données pour mocker "return_value" du "clean_text"
-        self.clean_body_spam = []  # données pour mocker "return_value" du "clean_text"
-        self.clean_subject_ham = []  # données pour mocker "return_value" du "clean_text"
-        self.clean_body_ham = []  # données pour mocker "return_value" du "clean_text"
-        self.vocab_expected = {}  # vocabulaire avec les valeurs de la probabilité calculées correctement
+        # données pour mocker "return_value" du "load_dict"
+        self.mails_spam = {
+            "dataset": [
+                {
+                    "mail": {
+                        "Subject": " attention spam spam subject",
+                        "From": "GP@paris.com",
+                        "Date": "2005-03-04",
+                        "Body": "body spam a spam",
+                        "Spam": "true",
+                        "File": "enronds//enron4/spam/4536.2005-03-04.GP.spam.txt"
+                    }
+                }
+            ]
+        }
+
+        self.mails_ham = {
+          "dataset": [
+                {
+                    "mail": {
+                        "Subject": " we we nice subject",
+                        "From": "GP@paris.com",
+                        "Date": "2004-03-09",
+                        "Body": "we got nice nice ",
+                        "Spam": "false",
+                        "File": "enronds//enron4/spam/0559.2004-03-09.GP.spam.txt"
+                    }
+                }
+            ]
+        }
+
+        self.clean_subject_spam = ["spam","spam", "subject", "attention"]  # données pour mocker "return_value" du "clean_text"
+        self.clean_body_spam = ["body", "spam","spam", "a"]  # données pour mocker "return_value" du "clean_text"
+        self.clean_subject_ham = ["we","we","nice","subject"]  # données pour mocker "return_value" du "clean_text"
+        self.clean_body_ham = ["we", "got", "nice","nice"]  # données pour mocker "return_value" du "clean_text"
+        self.vocab_expected_spam = { 
+            'p_sub_spam': {'spam': 0.5, 'attention': 0.25, 'subject': 0.25},
+            'p_sub_ham': {},
+            'p_body_spam': {'body':0.25,'spam':0.5, 'a':0.25},
+            'p_body_ham': {}
+        }  # vocabulaire avec les valeurs de la probabilité calculées correctement
+
+        self.vocab_expected_ham = { 
+            'p_sub_spam': {},
+            'p_sub_ham': {'we': 0.5, 'nice': 0.25, 'subject': 0.25},
+            'p_body_spam': {},
+            'p_body_ham': {'we':0.25,'nice':0.5, 'got':0.25}
+        }
+
+        self.ar_spam = [self.clean_body_spam, self.clean_subject_spam]
+        self.ar_ham = [self.clean_body_ham, self.clean_subject_ham]
+        
 
     def tearDown(self):
         pass
+    def side_effect_spam(self,args):
+        return self.ar_spam.pop()
+
+    def side_effect_ham(self,args):
+        
+        return self.ar_ham.pop()
+
 
     @patch("vocabulary_creator.VocabularyCreator.load_dict")
     @patch("vocabulary_creator.VocabularyCreator.clean_text")
@@ -30,8 +84,57 @@ class TestVocabularyCreator(unittest.TestCase):
          d'écrire au fichier "vocabulary.json".
          if faut utiliser self.assertEqual(appel_a_create_vocab(), self.vocab_expected)
         """
+
+   
+        mock_write_data_to_vocab_file.return_value = True
+
+        mock_load_dict.return_value = self.mails_spam
+        mock_clean_text.side_effect = self.side_effect_spam
+
+        vocab  = VocabularyCreator()
+        self.assertEqual(vocab.create_vocab(), self.vocab_expected_spam)
+        
         pass
     
     ###########################################
     #               CUSTOM TEST               #
     ###########################################
+
+    @patch("vocabulary_creator.VocabularyCreator.load_dict")
+    @patch("vocabulary_creator.VocabularyCreator.clean_text")
+    @patch("vocabulary_creator.VocabularyCreator.write_data_to_vocab_file")
+    def test_create_vocab_ham_Returns_vocabulary_with_correct_values(
+        self, mock_write_data_to_vocab_file, mock_clean_text, mock_load_dict
+    ):
+        
+   
+        mock_write_data_to_vocab_file.return_value = True
+        mock_load_dict.return_value = self.mails_ham
+        mock_clean_text.side_effect = self.side_effect_ham
+
+        vocab  = VocabularyCreator()
+        self.assertEqual(vocab.create_vocab(), self.vocab_expected_ham)
+        
+        pass
+
+    @patch("vocabulary_creator.VocabularyCreator.load_dict")
+    @patch("vocabulary_creator.VocabularyCreator.clean_text")
+    def test_write_data_to_vocab_file_successfully_write_vocabulary_with_correct_values(
+        self, mock_clean_text, mock_load_dict
+    ):
+        mock_load_dict.return_value = self.mails_ham
+        mock_clean_text.side_effect = self.side_effect_ham
+        
+        vocab  = VocabularyCreator()
+        self.assertEqual(vocab.write_data_to_vocab_file(vocab.create_vocab()),True)
+
+        with open("vocabulary.json") as json_data:
+            vocab = json.load(json_data)
+
+        self.assertEqual(vocab,self.vocab_expected_ham)
+        
+        pass
+
+
+
+    
