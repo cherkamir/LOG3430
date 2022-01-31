@@ -243,6 +243,9 @@ class TestCRUD(unittest.TestCase):
     def test_get_user_id_Returns_false_for_invalid_user_name(
         self, mock_read_users_file
     ):
+        """
+        Similaire au test_get_user_data_Returns_false_for_invalid_id mais pour un id
+        """
 
         mock_read_users_file.return_value = self.groups_data
         crud = CRUD()
@@ -253,6 +256,7 @@ class TestCRUD(unittest.TestCase):
 
     @patch("crud.CRUD.read_users_file")
     def test_get_user_id_Returns_id_for_valid_user_name(self, mock_read_users_file):
+
 
         mock_read_users_file.return_value = self.users_data
         crud = CRUD()
