@@ -189,6 +189,7 @@ class RENEGE:
         time_last_seen_message = self.crud.get_user_data(user_id, "Date_of_last_seen_message")
         NHam = self.crud.get_user_data(user_id, "HamN")
         NSpam = self.crud.get_user_data(user_id, "SpamN")
+        groups = self.crud.get_user_data(user_id, "Groups")
         trust2 = 0
         nb_groups = 0
 
@@ -196,7 +197,6 @@ class RENEGE:
         trust1 = time_last_seen_message * NHam / time_first_seen_message * (NHam + NSpam)
 
         # Calcul trust2
-        groups = self.crud.get_user_data(user_id, "Groups")
         for group in groups:
             trust2 += self.crud.get_groups_data(self.crud.get_group_id(group), "Trust")
             nb_groups += 1

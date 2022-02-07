@@ -657,7 +657,8 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
-        #on verifie que update_users retourne False si la date de derniere connexion est avant la date actuelle
+        #on verifie que update_users retourne False si la date de dernier message est plus recente que le dernier
+        #message passé
         self.assertFalse(crud.update_users("0", "Date_of_last_seen_message", "2020-08-08"))
 
     @patch("crud.CRUD.read_users_file")
@@ -666,7 +667,8 @@ class TestCRUD(unittest.TestCase):
     ):
         mock_read_users_file.return_value = self.custom_users_data
         crud = CRUD()
-        #on verifie que update_users retourne False si la date de premiere connexion est apres la date actuelle
+        #on verifie que update_users retourne False si la date de premier message est plus vieille que le premier
+        #message passé
         self.assertFalse(crud.update_users("0", "Date_of_first_seen_message", "2020-08-08"))
 
     
