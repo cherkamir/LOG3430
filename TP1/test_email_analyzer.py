@@ -29,7 +29,7 @@ class TestEmailAnalyzer(unittest.TestCase):
             1,
         )  # données pour mocker "return_value" du "subject_spam_ham_prob"
         self.vocab = (
-            {}
+            {"p_sub_spam": {}, "p_sub_ham": {}, "p_body_spam": {}, "p_body_ham": {}}
         )  # vocabulaire avec les valeurs de la probabilité pour mocker "return_value" du "load_dict"
         self.spam_ham_body_prob_expected = 0, 1  # valeurs des probabilités attendues
         self.spam_ham_subject_prob_expected = 1, 0  # valeurs des probabilités attendues
@@ -75,7 +75,7 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker la fonction "load_dict"
         Il faut vérifier que probabilité est calculée correctement en fonction du "body"
         """
-        mock_load_dict = self.vocab
+        mock_load_dict.return_value = self.vocab
         email = EmailAnalyzer()
         self.assertEqual(email.spam_ham_body_prob(self.body), (0.5925, 0.4075))
         pass
@@ -86,7 +86,7 @@ class TestEmailAnalyzer(unittest.TestCase):
         Il faut mocker la fonction "load_dict"
         il faut vérifier que probabilité est calculée correctement en fonction du "sujet"
         """
-        mock_load_dict = self.vocab
+        mock_load_dict.return_value = self.vocab
         email = EmailAnalyzer()
         self.assertEqual(email.spam_ham_subject_prob(self.subject), (0.5925, 0.4075))
         pass
