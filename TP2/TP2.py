@@ -1,14 +1,4 @@
 def logic_equation(P, date_first_seen_message, date_last_seen_message, user_trust, group_trust ):
-    '''
-    - S = vrai, si le message est classifi´e comme Spam.
-    — P : vrai, si le message courant est classifi´e comme Spam selon le vocabulaire cr´e´e.
-    — H : vrai, si le temps entre la date du premier message vu et la date du dernier message
-        vu est est inf´erieur `a 20 jours.
-    — U : vrai, si le niveau de Trust de l’utilisateur est inf´erieur `a 50.
-    — G : vrai, si le niveau de Trust du groupe de l’utilisateur est sup´erieur ou ´egal `a 50.
-
-    S = P ∗ ((H ∗ U) + (U ∗ ¬G))
-    '''
 
     H = True if (date_last_seen_message - date_first_seen_message) < 20 else False
     U = True if user_trust < 50 else False
@@ -19,16 +9,6 @@ def logic_equation(P, date_first_seen_message, date_last_seen_message, user_trus
 
 
 def logic_equation_dnf(P, date_first_seen_message, date_last_seen_message, user_trust, group_trust ):
-    '''
-    - S = vrai, si le message est classifi´e comme Spam.
-    — P : vrai, si le message courant est classifi´e comme Spam selon le vocabulaire cr´e´e.
-    — H : vrai, si le temps entre la date du premier message vu et la date du dernier message
-        vu est est inf´erieur `a 20 jours.
-    — U : vrai, si le niveau de Trust de l’utilisateur est inf´erieur `a 50.
-    — G : vrai, si le niveau de Trust du groupe de l’utilisateur est sup´erieur ou ´egal `a 50.
-
-    S = P ∗ ((H ∗ U) + (U ∗ ¬G))
-    '''
 
     H = True if (date_last_seen_message - date_first_seen_message) < 20 else False
     U = True if user_trust < 50 else False
@@ -37,8 +17,24 @@ def logic_equation_dnf(P, date_first_seen_message, date_last_seen_message, user_
     S = P and H and U or P and U and not G
     return S
 
+def truth_table_dnf():
+
+    table = []
+    for P in range(0,2):
+        for H in range(0,2):
+            for U in range(0,2):
+                for G in range(0,2):
+                    row = []
+                    row.append(bool(P))
+                    row.append(bool(H))
+                    row.append(bool(U))
+                    row.append(bool(G))
+                    row.append(bool(P) and bool(H) and bool(U) or bool(P) and bool(U) and bool(G))
+                    table.append(row)
+    return table 
 
 #test
 print(logic_equation(True, 25, 70, 30, 70))
 print(logic_equation_dnf(True, 25, 70, 30, 70))
-
+liste = truth_table_dnf()
+print(liste[len(liste)-1][3])
