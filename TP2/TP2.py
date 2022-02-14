@@ -71,3 +71,39 @@ for k in range(len(liste[0])-1):
                 if k == 3: char = 'G'
                 print(f"{counter}. Pour la clause {char}, on a le couple [{i}, {j}]")
                 counter += 1
+
+def ic_criteria():
+    dnf_implicants = ['PHU', 'PU~G']
+    negation_implicants = ['~P', '~U', '~HG']
+
+    test_d1 = []
+    test_d2 = []
+    d1_used_variables = []
+    d2_used_variables = []
+
+    for i in range(len(dnf_implicants)):
+        for j in range(len(dnf_implicants[i])):
+
+            if dnf_implicants[i][j] == '~':
+                if dnf_implicants[i][j + 1] not in d1_used_variables:
+                    test_d1.append(dnf_implicants[i][j + 1] + ' = False')
+                    d1_used_variables.append((dnf_implicants[i][j + 1]))
+            elif dnf_implicants[i][j] not in d1_used_variables:
+                test_d1.append(dnf_implicants[i][j] + ' = True')
+                d1_used_variables.append((dnf_implicants[i][j]))
+
+    for i in range(len(negation_implicants)):
+        for j in range(len(negation_implicants[i])):
+            if negation_implicants[i][j] == '~':
+                if negation_implicants[i][j + 1] not in d2_used_variables:
+                    test_d2.append(negation_implicants[i][j + 1] + ' = False')
+                    d2_used_variables.append((negation_implicants[i][j + 1]))
+            elif negation_implicants[i][j] not in d2_used_variables:
+                test_d2.append(negation_implicants[i][j] + ' = True')
+                d2_used_variables.append((negation_implicants[i][j]))
+
+    print("D1 = ", test_d1)
+    print("D2 = ", test_d2)
+
+
+ic_criteria()
