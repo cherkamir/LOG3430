@@ -54,11 +54,12 @@ def truth_table_dnf():
 #test
 # print(logic_equation(True, 25, 70, 30, 70))
 # print(logic_equation_dnf(True, 25, 70, 30, 70))
-liste = truth_table_dnf()
+
 # liste2 = truth_table()
 # print(liste[len(liste)-1][3])
-
+liste = truth_table_dnf()
 counter = 0
+print("Jeu de test pour le critere CACC:")
 for k in range(len(liste[0])-1):
     for i in range(len(liste)):
         for j in range(len(liste)):    
@@ -70,10 +71,3 @@ for k in range(len(liste[0])-1):
                 if k == 3: char = 'G'
                 print(f"{counter}. Pour la clause {char}, on a le couple [{i}, {j}]")
                 counter += 1
-
-
-#[True, False, fesfsef, True]
-#[False, sefoijesfsfjs, False]
-
-#[False, seoifjseoifj, True]
-#[True, osiefhseioff, False]
