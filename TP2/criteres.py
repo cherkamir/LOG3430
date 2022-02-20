@@ -114,39 +114,28 @@ def gicc_criteria(liste):
 
 
 def ic_criteria():
-
-    print ("Jeu de tests critere ic")
     dnf_implicants = ['PHU', 'PU~G']
-    negation_implicants = ['~P', '~U', '~HG']
+    dnf_negation_implicants = ['~P', '~U', '~HG']
 
-    test_d1 = []
-    test_d2 = []
-    d1_used_variables = []
-    d2_used_variables = []
+    print("D1 = ", generate_ic_test(dnf_implicants))
+    print("D2 = ", generate_ic_test(dnf_negation_implicants))
 
-    for i in range(len(dnf_implicants)):
-        for j in range(len(dnf_implicants[i])):
 
-            if dnf_implicants[i][j] == '~':
-                if dnf_implicants[i][j + 1] not in d1_used_variables:
-                    test_d1.append(dnf_implicants[i][j + 1] + ' = False')
-                    d1_used_variables.append((dnf_implicants[i][j + 1]))
-            elif dnf_implicants[i][j] not in d1_used_variables:
-                test_d1.append(dnf_implicants[i][j] + ' = True')
-                d1_used_variables.append((dnf_implicants[i][j]))
+def generate_ic_test(implicants):
+    test = []
+    used_variables = []
 
-    for i in range(len(negation_implicants)):
-        for j in range(len(negation_implicants[i])):
-            if negation_implicants[i][j] == '~':
-                if negation_implicants[i][j + 1] not in d2_used_variables:
-                    test_d2.append(negation_implicants[i][j + 1] + ' = False')
-                    d2_used_variables.append((negation_implicants[i][j + 1]))
-            elif negation_implicants[i][j] not in d2_used_variables:
-                test_d2.append(negation_implicants[i][j] + ' = True')
-                d2_used_variables.append((negation_implicants[i][j]))
+    for i in range(len(implicants)):
+        for j in range(len(implicants[i])):
+            if implicants[i][j] == '~':
+                if implicants[i][j + 1] not in used_variables:
+                    test.append(implicants[i][j + 1] + ' = False')
+                    used_variables.append((implicants[i][j + 1]))
+            elif implicants[i][j] not in used_variables:
+                test.append(implicants[i][j] + ' = True')
+                used_variables.append((implicants[i][j]))
+    return test
 
-    print("D1 = ", test_d1)
-    print("D2 = ", test_d2)
 
 
 # ic_criteria()
