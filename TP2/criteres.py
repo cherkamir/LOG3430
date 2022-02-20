@@ -55,6 +55,7 @@ def truth_table_dnf():
 
 
 def print_truth_table(liste):
+    print("Affichage de la table de vérité \n")
     print( "    P     H       U      G     S" )
     for i in range(len(liste)):
         print(liste[i])
@@ -63,7 +64,7 @@ def print_truth_table(liste):
 
 def cacc_criteria(liste):
     amount_of_couples = 1
-    print("Jeu de test pour le critere CACC:")
+    print("Jeu de test pour le critere CACC: \n")
     for k in range(len(liste[0])-1):
         found = False
         for i in range(len(liste)):
@@ -79,7 +80,7 @@ def cacc_criteria(liste):
                     amount_of_couples += 1
                     
 def gicc_criteria(liste):
-    print("Jeu de test pour le critere GICC:")
+    print("Jeu de test pour le critere GICC: \n")
 
     for k in range(len(liste[0])-1):
         amount_of_couples_icc = 1
@@ -109,11 +110,13 @@ def gicc_criteria(liste):
                 print(f"{amount_of_couples_icc}. Pour la clause {char}, on a les tests {i} {liste[i]}")
                 amount_of_couples_icc += 1
                 test_cases_found_ff = True
+        print("\n")
             
 
 
 
 def ic_criteria():
+    print("Jeu de test pour le critere IC: \n")
     dnf_implicants = ['PHU', 'PU~G']
     dnf_negation_implicants = ['~P', '~U', '~HG']
 
@@ -138,15 +141,3 @@ def generate_ic_test(implicants):
 
 
 
-# ic_criteria()
-liste = truth_table()
-print_truth_table(liste)
-print("---------------------------------------------")
-print("---------------------------------------------")
-cacc_criteria(liste)
-print("---------------------------------------------")
-print("---------------------------------------------")
-gicc_criteria(liste)
-print("---------------------------------------------")
-print("---------------------------------------------")
-ic_criteria()
