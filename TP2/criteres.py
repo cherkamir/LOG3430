@@ -61,7 +61,6 @@ def print_truth_table(liste):
         print(liste[i])
 
 
-
 def cacc_criteria(liste):
     amount_of_couples = 1
     print("Jeu de test pour le critere CACC: \n")
@@ -114,16 +113,6 @@ def gicc_criteria(liste):
             
 
 
-
-def ic_criteria():
-    print("Jeu de test pour le critere IC: \n")
-    dnf_implicants = ['PHU', 'PU~G']
-    dnf_negation_implicants = ['~P', '~U', '~HG']
-
-    print("D1 = ", generate_ic_test(dnf_implicants))
-    print("D2 = ", generate_ic_test(dnf_negation_implicants))
-
-
 def generate_ic_test(implicants):
     test = []
     used_variables = []
@@ -139,5 +128,11 @@ def generate_ic_test(implicants):
                 used_variables.append((implicants[i][j]))
     return test
 
+def ic_criteria():
+    print("Jeu de test pour le critere IC: \n")
+    dnf_implicants = ['PHU', 'PU~G']
+    dnf_negation_implicants = ['~P', '~U', '~HG']
 
+    print("D1 = ", generate_ic_test(dnf_implicants))
+    print("D2 = ", generate_ic_test(dnf_negation_implicants))
 
