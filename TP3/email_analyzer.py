@@ -12,7 +12,7 @@ class EmailAnalyzer:
         self.cleaning = TextCleaning()
         self.voc_data = {}
 
-    def is_spam(self, subject_orig, body_orig, is_log_prob, is_log_combine):
+    def is_spam(self, subject_orig, body_orig, is_log_prob, is_log_combine, clean_option):
         '''
         Description: fonction pour verifier si e-mail est spam ou ham,
         en calculant les probabilites d'etre spam et ham, 
