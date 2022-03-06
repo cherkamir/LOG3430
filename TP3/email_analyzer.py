@@ -25,6 +25,8 @@ class EmailAnalyzer:
 
         # Get the spam/ham probabilities
 
+        # On pose k = 0.6 comme donnée dans l'énoncé pour le coefficient de p_subject.
+        k = 0.6
         if is_log_prob:
             p_subject_spam, p_subject_ham = self.spam_ham_log_subject_prob(email_subject)
             p_body_spam,    p_body_ham    = self.spam_ham_log_body_prob(email_body)
@@ -33,9 +35,22 @@ class EmailAnalyzer:
             p_body_spam,    p_body_ham    = self.spam_ham_body_prob(email_body)
 
 
+        if is_log_combine:
+            p_sub_spam_text = 0 if p_subject_spam == 0 else k * math.log10(p_subject_spam)
+            p_body_spam_text = 0 if p_body_spam == 0 else (1 - k)* math.log10(p_body_spam)
+            p_spam = math.pow(10, p_sub_spam_text + p_body_spam_text)
+
+            p_sub_ham_text = 0 if p_subject_ham == 0 else k * math.log10(p_subject_ham)
+            p_body_ham_text = 0 if p_body_ham == 0 else (1 - k)* math.log10(p_body_ham)
+            p_ham = math.pow(10, p_sub_ham_text + p_body_ham_text) 
+        else:
+            p_spam = k * p_subject_spam + (1 - k)* p_body_spam
+            p_ham  = k * p_subject_ham  + (1 - k) * p_body_ham   
+
+
+
         # Compute the merged probabilities
-        p_spam = 0.5 * (p_subject_spam + p_body_spam)
-        p_ham  = 0.5 * (p_subject_ham  + p_body_ham)      
+     
 
         # Decide is the email is spam or ham
         if p_spam > p_ham:
