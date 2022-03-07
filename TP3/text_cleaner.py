@@ -64,9 +64,9 @@ class TextCleaning:
         text = self.remove_non_letters(text)
         text = self.remove_non_ascii(text)
         text = self.tokenize_words(text)
-        if clean_option == 0:
-            text = self.stem_words(text)
+        if clean_option:
             text = self.remove_stop_words(text)
-        elif clean_option == 1:
+        else:
+            text = self.stem_words(text)
             text = self.remove_stop_words(text)
         return text

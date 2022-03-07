@@ -30,7 +30,7 @@ class VocabularyCreator:
                     data.pop(wd)
                     total -= nb_occ
 
-        # On effectue le reste du calcul apres avoir raccourci le data selon la condition minimale d'occurrence 
+        # On effectue le reste du calcul apres avoir raccourci le data selon la condition minimale d'occurrence
         for wd in data:
             proba_dict[wd] = data[wd] / total
 
@@ -114,10 +114,14 @@ class VocabularyCreator:
                         occ_ham_bod[wd] += 1
 
         # Create the data dictionary
-        p_sub_spam = self.compute_proba(occ_spam_sub, total_occ_spam_sub)
-        p_sub_ham = self.compute_proba(occ_ham_sub, total_occ_ham_sub)
-        p_body_spam = self.compute_proba(occ_spam_bod, total_occ_spam_bod)
-        p_body_ham = self.compute_proba(occ_ham_bod, total_occ_ham_bod)
+        p_sub_spam = self.compute_proba(
+            occ_spam_sub, total_occ_spam_sub, min_occurrence)
+        p_sub_ham = self.compute_proba(
+            occ_ham_sub, total_occ_ham_sub, min_occurrence)
+        p_body_spam = self.compute_proba(
+            occ_spam_bod, total_occ_spam_bod, min_occurrence)
+        p_body_ham = self.compute_proba(
+            occ_ham_bod, total_occ_ham_bod, min_occurrence)
 
         self.voc_data = {
             "p_sub_spam": p_sub_spam,

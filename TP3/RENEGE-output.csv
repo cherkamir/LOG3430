@@ -1,0 +1,17 @@
+is_log_prob,is_log_combine,clean_option,min_occurrence
+true,true,true,1
+true,false,false,1
+false,true,false,1
+false,false,true,1
+true,true,false,2
+true,false,true,2
+false,true,true,2
+false,false,false,2
+true,true,true,3
+true,false,false,3
+false,true,false,3
+false,false,true,3
+true,true,true,4
+true,false,false,4
+false,true,false,4
+false,false,true,4

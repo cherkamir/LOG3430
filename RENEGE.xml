@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="RENEGE">
+  <Parameters>
+    <Parameter id="0" name="is_log_prob" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="1" name="is_log_combine" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="clean_option" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="3" name="min_occurrence" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations>
+    <Relation Strength="3" Default="false">
+      <Parameter name="is_log_prob">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="is_log_combine">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="clean_option">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="min_occurrence">
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+      </Parameter>
+    </Relation>
+    <Relation Strength="2" Default="false">
+      <Parameter name="is_log_prob">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="is_log_combine">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="clean_option">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="min_occurrence">
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+      </Parameter>
+    </Relation>
+    <Relation Strength="4" Default="false">
+      <Parameter name="is_log_prob">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="is_log_combine">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="clean_option">
+        <value>true</value>
+        <value>false</value>
+      </Parameter>
+      <Parameter name="min_occurrence">
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+      </Parameter>
+    </Relation>
+  </Relations>
+  <Constraints />
+</System>
+

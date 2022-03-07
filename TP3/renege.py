@@ -15,7 +15,7 @@ class RENEGE:
         self.crud = CRUD()
         self.e_mail = EmailAnalyzer()
 
-    def classify_emails(self, is_log_prob = False, is_log_combine = False, clean_option = 0):
+    def classify_emails(self, is_log_prob = False, is_log_combine = False, clean_option = False):
         '''
         Description: fonction pour commencer l'analyse des e-mails.
         Sortie: bool, 'True' pour success, 'False' dans le cas de failure.
@@ -29,7 +29,7 @@ class RENEGE:
             return False
 
 
-    def process_email(self, new_emails,is_log_prob, is_log_combine, clean_option):
+    def process_email(self,new_emails,is_log_prob, is_log_combine, clean_option):
         '''
         Description: fonction pour analyser chaque nouvel e-mail dans le 
         dictionnaire. Elle gere l'ajout des nouveaux utilisateurs et/ou modification
