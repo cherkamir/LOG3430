@@ -23,12 +23,12 @@ class VocabularyCreator:
         # on cree une copie pour iterer et eliminer tous les mots qui n'ont pas le minimum de d'occurence requis
         # On retire donc le mot et on diminue aussi le total d'occurences
         temporary_data = data.copy()
-        if(min_occurrence < 5):
-            for wd in temporary_data:
-                nb_occ = temporary_data[wd]
-                if(nb_occ < min_occurrence):
-                    data.pop(wd)
-                    total -= nb_occ
+
+        for wd in temporary_data:
+            nb_occ = temporary_data[wd]
+            if(nb_occ < min_occurrence):
+                data.pop(wd)
+                total -= nb_occ
 
         # On effectue le reste du calcul apres avoir raccourci le data selon la condition minimale d'occurrence
         for wd in data:
@@ -36,14 +36,17 @@ class VocabularyCreator:
 
         return proba_dict
 
-    def create_vocab(self, min_occurrence=1, clean_option=0):
+    def create_vocab(self, min_occurrence = 1, clean_option = False):
         '''
         Description: fonction pour creer le vocabulaire des mots presents
         dans les e-mails spam et ham et le sauvegarder dans le fichier
         vocabulary.json selon le format specifie dans la description de lab
         Sortie: bool, 'True' pour success, 'False' dans le cas de failure.
         '''
+
+
         print("Creating vocabulary")
+
 
         dataset = self.load_dict()
 

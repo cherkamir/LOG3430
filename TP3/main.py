@@ -51,6 +51,7 @@ def exec_test_set():
     # Ouvrir le fichier csv, passer la première ligne et executer une fois par cas de test
     with open('RENEGE-output.csv', newline='') as csvfile:
         test_set_reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+
         for test_case in test_set_reader:
             if first_line:
 
@@ -59,6 +60,7 @@ def exec_test_set():
                 continue
             
             print(test_case)
+
             # 1. Creation de vocabulaire.
             vocab = VocabularyCreator()
             vocab.create_vocab(int(test_case[3]), test_case[2])

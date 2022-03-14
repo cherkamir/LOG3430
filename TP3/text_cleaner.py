@@ -64,9 +64,14 @@ class TextCleaning:
         text = self.remove_non_letters(text)
         text = self.remove_non_ascii(text)
         text = self.tokenize_words(text)
+        
+        # On considère clean_option comme un booléen True ou False pour faire référence à 0 ou 1
+        #En fonction de l'option de nettoyage, on fait un traitement approprié
         if clean_option:
+            #On retire les stop words 
             text = self.remove_stop_words(text)
         else:
+            #On retire les stem words et stop words 
             text = self.stem_words(text)
             text = self.remove_stop_words(text)
         return text
