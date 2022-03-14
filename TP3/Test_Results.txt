@@ -1,5 +1,5 @@
 
- ['is_log_prob', 'is_log_combine', 'clean_option', 'min_occurrence']
+['is_log_prob', 'is_log_combine', 'clean_option', 'min_occurrence']
 ['true', 'true', 'true', '1']
 Creating vocabulary
 Email 800/800Vocab created
