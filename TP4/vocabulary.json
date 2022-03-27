@@ -1,0 +1,1 @@
+{"p_sub_spam": {}, "p_sub_ham": {"we": 0.5, "nice": 0.25, "subject": 0.25}, "p_body_spam": {}, "p_body_ham": {"we": 0.25, "got": 0.25, "nice": 0.5}}
