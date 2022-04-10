@@ -10,8 +10,8 @@ class RENEGE:
     """Classe pour realiser le filtrage du spam en utilisant le fichier vocabulary.json et
     les classes CRUD et EmailAnalyzer"""
 
-    def __init__(self):
-        self.email_file = "train_set.json"
+    def __init__(self, email_file = "train_set.json"):
+        self.email_file = email_file
         self.crud = CRUD()
         self.e_mail = EmailAnalyzer()
 

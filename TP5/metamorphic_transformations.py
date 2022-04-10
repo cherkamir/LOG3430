@@ -70,7 +70,7 @@ if __name__ == '__main__':
     shuffle_words_order(test_set, "test_shuffle.json")
 
     triple_emails(train_set, "train700x3.json")
-    triple_emails(test_set, "test700x3.json")
+    triple_emails(test_set, "test300x3.json")
 
     duplicate_emails_words(train_set, "train_words.json")
     duplicate_emails_words(test_set, "test_words.json")
