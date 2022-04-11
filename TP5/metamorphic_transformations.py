@@ -24,7 +24,7 @@ def shuffle_words_order(source_set, result_file):
 
     for email in result['dataset']:
         body = email['mail']['Body'].split(' ')
-        for i in range(9):
+        for i in range(10):
             index_1 = random.randint(0, len(body) - 1)
             index_2 = random.randint(0, len(body) - 1)
 

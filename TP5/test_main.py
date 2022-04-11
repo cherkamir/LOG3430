@@ -29,8 +29,8 @@ class TestMain(unittest.TestCase):
   
     def test_clean_train(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test clean du train_set.json")
+        print ("\n--------------------------------------\n")
 
         classify_emails("train_clean.json")
         f1_score = evaluate(self.default_test_set)
@@ -42,8 +42,8 @@ class TestMain(unittest.TestCase):
 
     def test_clean_test(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test clean du test_set.json")
+        print ("\n--------------------------------------\n")
 
         f1_score = evaluate("test_clean.json")
 
@@ -56,8 +56,8 @@ class TestMain(unittest.TestCase):
     
     def test_permutations_train(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test 10 permutations de mots du train_set.json")
+        print ("\n--------------------------------------\n")
 
         classify_emails("train_shuffle.json")
         f1_score = evaluate(self.default_test_set)
@@ -69,8 +69,8 @@ class TestMain(unittest.TestCase):
 
     def test_permutations_test(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test 10 permutations de mots du test_set.json")
+        print ("\n--------------------------------------\n")
 
         f1_score = evaluate("test_shuffle.json")
 
@@ -82,8 +82,8 @@ class TestMain(unittest.TestCase):
 
     def test_triple_train(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test tripler les emails du train_set.json")
+        print ("\n--------------------------------------\n")
 
         classify_emails("train700x3.json")
         f1_score = evaluate(self.default_test_set)
@@ -95,8 +95,8 @@ class TestMain(unittest.TestCase):
 
     def test_triple_test(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test tripler les emails du test_set.json")
+        print ("\n--------------------------------------\n")
 
         f1_score = evaluate("test300x3.json")
 
@@ -109,8 +109,8 @@ class TestMain(unittest.TestCase):
 
     def test_duplicate_train(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test dupliquer les mots des emails du train_set.json")
+        print ("\n--------------------------------------\n")
 
         classify_emails("train_words.json")
         f1_score = evaluate(self.default_test_set)
@@ -122,8 +122,8 @@ class TestMain(unittest.TestCase):
 
     def test_duplicate_test(self):
         print ("\n--------------------------------------\n")
-        print ("\n--------------------------------------\n")
         print("test dupliquer les mots des emails du test_set.json")
+        print ("\n--------------------------------------\n")
 
         f1_score = evaluate("test_words.json")
 
